@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 
-const API_KEY = import.meta.env.VITE_API_KEY
-
 function App() {
   // Issue 2: State management bisa lebih baik
   const [todos, setTodos] = useState([])
@@ -138,10 +136,6 @@ function App() {
       <div className="stats">
         <p>Total: {stats.total} | Active: {stats.active} | Completed: {stats.completed}</p>
       </div>
-      
-      {/* Issue 16: Debug code yang tertinggal */}
-      {console.log('Rendering with todos:', todos)}
-      {console.log('API Key:', API_KEY)}
     </div>
   )
 }
