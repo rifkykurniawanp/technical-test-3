@@ -37,10 +37,12 @@ function App() {
   }, [input, todos])
 
   const deleteTodo = useCallback((id) => {
+    if (!id) return
     setTodos(todos.filter(todo => todo.id !== id))
   }, [todos])
 
   const toggleTodo = useCallback((id) => {
+    if (!id) return
     setTodos(todos.map(todo => 
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ))
