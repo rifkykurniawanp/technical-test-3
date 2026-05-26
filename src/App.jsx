@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
-// Issue 1: Inline API key (security issue)
-const API_KEY = 'sk-1234567890abcdef'
+const API_KEY = import.meta.env.VITE_API_KEY
 
 function App() {
   // Issue 2: State management bisa lebih baik
