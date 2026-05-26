@@ -20,14 +20,11 @@ const TodoItem = ({ todo, onToggle, onDelete }) => {
 }
 
 function App() {
-  // Issue 2: State management bisa lebih baik
   const [todos, setTodos] = useState([])
   const [input, setInput] = useState('')
   const [filter, setFilter] = useState('all')
   
-  // Issue 3: useEffect tanpa dependency array yang tepat
   useEffect(() => {
-    // Load from localStorage
     const saved = localStorage.getItem('todos')
     if (saved) {
       setTodos(JSON.parse(saved))
@@ -83,7 +80,6 @@ const stats = useMemo(() => ({
   active: todos.filter(t => !t.completed).length
 }), [todos])
   
-  // Issue 10: Inline event handler dengan arrow function (re-create setiap render)
   return (
     <div className="app">
       <h1>My Todo List</h1>
