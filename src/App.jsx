@@ -1,5 +1,24 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 
+const TodoItem = ({ todo, onToggle, onDelete }) => {
+  return (
+    <div className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+      <input
+        type="checkbox"
+        checked={todo.completed}
+        onChange={() => onToggle(todo.id)}
+      />
+      <span>{todo.text}</span>
+      <button
+        className="delete-btn"
+        onClick={() => onDelete(todo.id)}
+      >
+        Delete
+      </button>
+    </div>
+  )
+}
+
 function App() {
   // Issue 2: State management bisa lebih baik
   const [todos, setTodos] = useState([])
@@ -114,20 +133,12 @@ const stats = useMemo(() => ({
           </p>
         ) : (
           filteredTodos.map((todo) => (
-            <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-              <input 
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <span>{todo.text}</span>
-              <button 
-                className="delete-btn"
-                onClick={() => deleteTodo(todo.id)}
-              >
-                Delete
-              </button>
-            </div>
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={toggleTodo}
+              onDelete={deleteTodo}
+            />
           ))
         )}
       </div>
