@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 function App() {
   // Issue 2: State management bisa lebih baik
@@ -49,23 +49,21 @@ function App() {
     ))
   }
   
-  // Issue 8: Logic filtering yang bisa dipindah ke useMemo
-  const getFilteredTodos = () => {
-    if (filter === 'active') {
-      return todos.filter(todo => !todo.completed)
-    }
-    if (filter === 'completed') {
-      return todos.filter(todo => todo.completed)
-    }
-    return todos
+  const filteredTodos = useMemo(() => {
+  if (filter === 'active') {
+    return todos.filter(todo => !todo.completed)
   }
-  
-  // Issue 9: Calculation yang tidak perlu di setiap render
-  const stats = {
-    total: todos.length,
-    completed: todos.filter(t => t.completed).length,
-    active: todos.filter(t => !t.completed).length
+  if (filter === 'completed') {
+    return todos.filter(todo => todo.completed)
   }
+  return todos
+}, [todos, filter])
+
+const stats = useMemo(() => ({
+  total: todos.length,
+  completed: todos.filter(t => t.completed).length,
+  active: todos.filter(t => !t.completed).length
+}), [todos])
   
   // Issue 10: Inline event handler dengan arrow function (re-create setiap render)
   return (
@@ -112,7 +110,7 @@ function App() {
       
       <div className="todo-list">
         {/* Issue 13: Tidak ada handling untuk empty state */}
-        {getFilteredTodos().map((todo) => (
+        {filteredTodos.map((todo) => (
           // Issue 14: Key menggunakan index bisa lebih baik dengan ID
           <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
             <input 
