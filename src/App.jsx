@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 
 function App() {
   // Issue 2: State management bisa lebih baik
@@ -15,18 +15,16 @@ function App() {
     }
   }, [])
   
- useEffect(() => {
-  localStorage.setItem('todos', JSON.stringify(todos))
-}, [todos])
-  
-  // Issue 5: Function yang tidak di-memoize, re-create setiap render
-  const addTodo = () => {
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
+    
+    const addTodo = useCallback(() => {
     if (input.trim() === '') {
       alert('Please enter a todo')
       return
     }
     
-    // Issue 6: Menggunakan Date.now() sebagai ID (bisa collision)
     const newTodo = {
       id: Date.now(),
       text: input,
@@ -36,18 +34,17 @@ function App() {
     
     setTodos([...todos, newTodo])
     setInput('')
-  }
-  
-  // Issue 7: Tidak ada error handling
-  const deleteTodo = (id) => {
+  }, [input, todos])
+
+  const deleteTodo = useCallback((id) => {
     setTodos(todos.filter(todo => todo.id !== id))
-  }
-  
-  const toggleTodo = (id) => {
+  }, [todos])
+
+  const toggleTodo = useCallback((id) => {
     setTodos(todos.map(todo => 
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ))
-  }
+  }, [todos])
   
   const filteredTodos = useMemo(() => {
   if (filter === 'active') {
