@@ -108,25 +108,28 @@ const stats = useMemo(() => ({
       </div>
       
       <div className="todo-list">
-        {/* Issue 13: Tidak ada handling untuk empty state */}
-        {filteredTodos.map((todo) => (
-          // Issue 14: Key menggunakan index bisa lebih baik dengan ID
-          <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-            <input 
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
-            />
-
-            <span>{todo.text}</span>
-            <button 
-              className="delete-btn"
-              onClick={() => deleteTodo(todo.id)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {filteredTodos.length === 0 ? (
+          <p className="empty-state">
+            {filter === 'all' ? 'No todos yet. Add one above!' : `No ${filter} todos.`}
+          </p>
+        ) : (
+          filteredTodos.map((todo) => (
+            <div key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+              <input 
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <span>{todo.text}</span>
+              <button 
+                className="delete-btn"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+            </div>
+          ))
+        )}
       </div>
       
       <div className="stats">
